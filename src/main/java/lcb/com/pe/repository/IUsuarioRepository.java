@@ -8,9 +8,13 @@ import lcb.com.pe.domain.Usuario;
 
 public interface IUsuarioRepository extends JpaRepository<Usuario, String>{
 
-    @Query("SELECT u FROM Usuario u left join fetch "
-    		+ "u.usuarioSistemas sis WHERE LOWER(u.usuario) = LOWER(:usuario)")
-    Usuario findByUsernameCaseInsensitive(@Param("usuario") String username);
+    @Query("SELECT u FROM Usuario u "
+    		+ "left join fetch u.usuarioSistemas sis "
+    		+ "left join fetch sis.rol rol "
+    		+ "left join fetch rol.sistema st "
+    		+ "WHERE LOWER(u.usuario) = LOWER(:usuario) "
+    		+ "and st.idSistema = :sistema")
+    Usuario findByUsernameCaseInsensitive(@Param("usuario") String username, @Param("sistema") int sistema);
 
     @Query
     Usuario findByEmail(String email);

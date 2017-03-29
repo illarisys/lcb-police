@@ -14,6 +14,7 @@ import org.springframework.security.oauth2.config.annotation.configurers.ClientD
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
+import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 
@@ -45,9 +46,9 @@ public class AuthServerOAuth2Config  extends AuthorizationServerConfigurerAdapte
      @Override
      public void configure(AuthorizationServerEndpointsConfigurer endpoints)
              throws Exception {
-         endpoints
-                 .tokenStore(tokenStore())
-                 .authenticationManager(authenticationManager);
+             endpoints
+             .tokenStore(tokenStore())
+             .authenticationManager(authenticationManager);
      }
 
      @Override
@@ -55,9 +56,9 @@ public class AuthServerOAuth2Config  extends AuthorizationServerConfigurerAdapte
          clients
                  .inMemory()
                  .withClient(propertyResolver.getProperty(PROP_CLIENTID))
-                 .scopes("read", "write")
+                 .authorizedGrantTypes("authorization_code", "password", "refresh_token")
                  .authorities(Authorities.ROLE_ADMIN.name(), Authorities.ROLE_USER.name())
-                 .authorizedGrantTypes("password", "refresh_token")
+                 .scopes("read", "write")
                  .secret(propertyResolver.getProperty(PROP_SECRET))
                  .accessTokenValiditySeconds(propertyResolver.getProperty(PROP_TOKEN_VALIDITY_SECONDS, Integer.class, 2000));
      }
@@ -65,6 +66,12 @@ public class AuthServerOAuth2Config  extends AuthorizationServerConfigurerAdapte
      @Override
      public void setEnvironment(Environment environment) {
          this.propertyResolver = new RelaxedPropertyResolver(environment, ENV_OAUTH);
+     }
+     
+     @Override
+     public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
+         //oauthServer.realm("sparklr2/client");
+         oauthServer.allowFormAuthenticationForClients();
      }
 	
 }

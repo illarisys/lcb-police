@@ -17,6 +17,7 @@ public class UsuarioService implements IUsuarioService{
 
 	@Override
 	public List<Usuario> findBySistema(int id_sistema) {
+		System.out.println("******************-----------------------------------------------------****************************");
 		return usuarioRepository.findAll();
 	}
 	

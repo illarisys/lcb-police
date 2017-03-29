@@ -15,7 +15,7 @@ import lcb.com.pe.domain.Usuario;
 import lcb.com.pe.service.UsuarioService;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/crm")
 public class UsuarioController {
 	
 	@Autowired
@@ -23,7 +23,7 @@ public class UsuarioController {
 
 	@RequestMapping(value="/", method = RequestMethod.GET)
 	public String getUser(){
-		return "/user.html";
+		return "user.html";
 	}
 	
 	@RequestMapping(value="/listUsers/{id_sistema}", method = RequestMethod.GET)
@@ -34,6 +34,6 @@ public class UsuarioController {
 			return new ResponseEntity<List<Usuario>>(HttpStatus.NO_CONTENT);
 		}
 		return new ResponseEntity<List<Usuario>>(list, HttpStatus.OK);
-	}
+	}	
 	
 }

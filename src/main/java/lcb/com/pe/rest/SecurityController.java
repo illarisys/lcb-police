@@ -17,5 +17,10 @@ public class SecurityController {
 	public String forgotPassword(){
 		return "/forgot.html";
 	}
+	
+	@RequestMapping(value="/hello", method = RequestMethod.GET)
+	public String hello(){
+		return "Holaaaaaaaaa...!";
+	}
 
 }

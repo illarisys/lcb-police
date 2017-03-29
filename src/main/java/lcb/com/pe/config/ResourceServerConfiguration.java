@@ -27,10 +27,11 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
         http
                 .exceptionHandling()
                 .authenticationEntryPoint(customAuthenticationEntryPoint)
-                .and()
+                .and()                
                 .logout()
                 .logoutUrl("/oauth/logout")
-                .logoutSuccessHandler(customLogoutSuccessHandler)
+                .addLogoutHandler(customLogoutSuccessHandler)
+                .deleteCookies("JSESSIONID")
                 .and()
                 .csrf()
                 .requireCsrfProtectionMatcher(new AntPathRequestMatcher("/oauth/authorize"))
@@ -43,7 +44,7 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
                 .and()
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
-                .antMatchers("/user/**").authenticated();
+                .antMatchers("/crm/**").authenticated();
 
     }
 

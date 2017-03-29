@@ -22,7 +22,7 @@ import javax.persistence.TemporalType;
 @Table(name = "Sistema", schema = "dbo", catalog = "LCB_SECURITY")
 public class Sistema implements java.io.Serializable {
 
-	private Short idSistema;
+	private int idSistema;
 	private String descripcion;
 	private String siglas;
 	private String usuarioRegistro;
@@ -56,11 +56,11 @@ public class Sistema implements java.io.Serializable {
 	@GeneratedValue(strategy = IDENTITY)
 
 	@Column(name = "id_sistema", unique = true, nullable = false)
-	public Short getIdSistema() {
+	public int getIdSistema() {
 		return this.idSistema;
 	}
 
-	public void setIdSistema(Short idSistema) {
+	public void setIdSistema(int idSistema) {
 		this.idSistema = idSistema;
 	}
 	
