@@ -5,9 +5,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.web.authentication.AbstractAuthenticationTargetUrlRequestHandler;
-import org.springframework.security.web.authentication.logout.LogoutHandler;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -17,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 @Component("customLogoutSuccessHandler")
 public class CustomLogoutSuccessHandler
         extends AbstractAuthenticationTargetUrlRequestHandler
-        implements LogoutHandler {
+        implements LogoutSuccessHandler {
 
 
     private static final String BEARER_AUTHENTICATION = "Bearer ";
@@ -27,19 +30,19 @@ public class CustomLogoutSuccessHandler
     private TokenStore tokenStore;
 
     @Override
-    public void logout(HttpServletRequest request,
-                                HttpServletResponse response,
-                                Authentication authentication) {
+	public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
+			throws IOException, ServletException {
 
         String token = request.getHeader(HEADER_AUTHORIZATION);
-
+        System.out.println("customLogoutSuccessHandler");
         if (token != null && token.startsWith(BEARER_AUTHENTICATION)) {
 
             OAuth2AccessToken oAuth2AccessToken = tokenStore.readAccessToken(token.split(" ")[1]);
 
             if (oAuth2AccessToken != null) {
-            	System.out.println("customLogoutSuccessHandler");
+            	System.out.println("oAuth2AccessToken != null");
                 tokenStore.removeAccessToken(oAuth2AccessToken);
+                request.getSession().invalidate();
             }
 
         }

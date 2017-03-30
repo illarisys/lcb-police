@@ -64,15 +64,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http            
-                .authorizeRequests().antMatchers("/me").authenticated()
+                .authorizeRequests()
+                .antMatchers("/crm/**").authenticated()
             .and()
-                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/oauth/logout"))
+                .logout()
+                .logoutUrl("/oauth/logout")
+                .logoutRequestMatcher(new AntPathRequestMatcher("/oauth/logout"))
                 //.addLogoutHandler(customLogoutSuccessHandler)
-                //.deleteCookies("JSESSIONID")
+                .deleteCookies("JSESSIONID")
             .and()
-                .requestMatchers().antMatchers("/login", "/oauth/authorize", "/oauth/confirm_access")
+                .requestMatchers()
+                .antMatchers("/login", "/logout", "/oauth/authorize", "/oauth/confirm_access")
             .and()
-                .authorizeRequests().anyRequest().authenticated();
+                .authorizeRequests()
+                .anyRequest().authenticated();
                 
         	/*http
         	.exceptionHandling()

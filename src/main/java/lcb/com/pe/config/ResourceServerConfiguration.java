@@ -28,7 +28,7 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
                 .and()                
                 .logout()
                 .logoutUrl("/oauth/logout")
-                .addLogoutHandler(customLogoutSuccessHandler)
+                .logoutSuccessHandler(customLogoutSuccessHandler)
                 .deleteCookies("JSESSIONID")
                 .and()
                 .csrf()

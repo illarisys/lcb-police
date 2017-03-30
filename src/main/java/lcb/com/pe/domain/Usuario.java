@@ -182,6 +182,7 @@ public class Usuario implements java.io.Serializable {
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario")
+	@JsonIgnore
 	public Set<UsuarioSistema> getUsuarioSistemas() {
 		return this.usuarioSistemas;
 	}
